@@ -24,9 +24,9 @@ jobs:
       - name: Amazon ECR Login
         uses: aws-actions/amazon-ecr-login@v2
 
-#      - name: Build and Push Docker Image to ECR
-#        run: |
-#          aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin ${{secrets.ACCOUNT_ID}}.dkr.ecr.eu-central-1.amazonaws.com
-#          docker build -t back-end-image .
-#          docker tag back-end-repository:latest ${{secrets.ACCOUNT_ID}}.dkr.ecr.eu-central-1.amazonaws.com/back-end-repository:latest
-#          docker push ${{secrets.ACCOUNT_ID}}.dkr.ecr.eu-central-1.amazonaws.com/back-end-repository:latest
+      - name: Build and Push Docker Image to ECR
+        run: |
+          aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin ${{secrets.ACCOUNT_ID}}.dkr.ecr.eu-north-1.amazonaws.com
+          docker build -t back-end-image .
+          docker tag back-end-repository:latest ${{secrets.ACCOUNT_ID}}.dkr.ecr.eu-north-1.amazonaws.com/lab_2:latest
+          docker push ${{secrets.ACCOUNT_ID}}.dkr.ecr.eu-north-1.amazonaws.com/lab_2:latest
