@@ -1,1 +1,37 @@
+name: example-basic
+# This workflow represents a set of basic End-to-End tests
+on:
+  push:
+    branches:
+      - 'lab_3'
+  workflow_dispatch:
 
+jobs:
+  backend-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Backend Repo
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
+        with:
+          docker-version: '24.0.6'
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-north-1
+
+      - name: Amazon ECR Login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Push Docker Image to ECR
+        run: |
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/a4e0d9k0
+          docker build -t lab_2 .
+          docker tag lab_2:latest public.ecr.aws/a4e0d9k0/lab_2:latest
+          docker push public.ecr.aws/a4e0d9k0/lab_2:latest
